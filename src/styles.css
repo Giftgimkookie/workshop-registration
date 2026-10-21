@@ -34,6 +34,11 @@ input, select {
   background: white;
 }
 
+input:focus-visible, select:focus-visible, button:focus-visible {
+  outline: 3px solid #ffb300;
+  outline-offset: 2px;
+}
+
 button {
   background: #0066cc;
   color: white;
@@ -42,6 +47,8 @@ button {
   padding: .75rem 1rem;
   cursor: pointer;
 }
+
+button.danger { background: #c62828; margin-top: .5rem; }
 
 form button[type=submit] { margin-top: 1rem; }
 

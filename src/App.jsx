@@ -66,6 +66,10 @@ export default function App() {
     setForm(EMPTY_FORM);
   }
 
+  function handleRemove(id) {
+    setRegistrations(registrations.filter((r) => r.id !== id));
+  }
+
   return (
     <main>
       <h1>Workshop Registration</h1>
@@ -145,6 +149,14 @@ export default function App() {
             <p>{r.workshop} · {r.date}</p>
             <p>{r.email} · {r.phone}</p>
             <p>Age {r.age}</p>
+            <button
+              type="button"
+              className="danger"
+              onClick={() => handleRemove(r.id)}
+              aria-label={`Remove ${r.name}`}
+            >
+              Remove
+            </button>
           </article>
         ))}
       </div>
