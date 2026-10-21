@@ -36,12 +36,15 @@ function validate(f) {
   return errors;
 }
 
+const EMPTY_FORM = {
+  name: '', email: '', phone: '', date: '', age: '', portfolio: '', workshop: '',
+};
+
 export default function App() {
-  const [form, setForm] = useState({
-    name: '', email: '', phone: '', date: '', age: '', portfolio: '', workshop: '',
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState({});
   const [registrations, setRegistrations] = useState([]);
+  const [success, setSuccess] = useState('');
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -52,8 +55,15 @@ export default function App() {
     e.preventDefault();
     const found = validate(form);
     setErrors(found);
-    if (Object.keys(found).length > 0) return;
-    console.log('Valid!', form);
+    if (Object.keys(found).length > 0) {
+      setSuccess('');
+      return;
+    }
+
+    const entry = { ...form, name: form.name.trim(), id: Date.now() };
+    setRegistrations([...registrations, entry]);
+    setSuccess(`${entry.name} is registered for ${entry.workshop}!`);
+    setForm(EMPTY_FORM);
   }
 
   return (
@@ -123,7 +133,21 @@ export default function App() {
         {errors.workshop && <p className="error" role="alert">{errors.workshop}</p>}
 
         <button type="submit">Register</button>
+        {success && <p className="success" role="status">{success}</p>}
       </form>
+
+      <h2>Registrations ({registrations.length})</h2>
+      {registrations.length === 0 && <p>No registrations yet.</p>}
+      <div className="grid">
+        {registrations.map((r) => (
+          <article className="card" key={r.id}>
+            <h3>{r.name}</h3>
+            <p>{r.workshop} · {r.date}</p>
+            <p>{r.email} · {r.phone}</p>
+            <p>Age {r.age}</p>
+          </article>
+        ))}
+      </div>
     </main>
   );
 }
